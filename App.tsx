@@ -1,11 +1,10 @@
 
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { EraSelectionScreen } from './components/EraSelectionScreen';
 import { StartScreen } from './components/StartScreen';
+import { RoleSelectionScreen } from './components/RoleSelectionScreen';
 import { GameScreen } from './components/GameScreen';
 import { GameOverScreen } from './components/GameOverScreen';
-import { RoleSelectionScreen } from './components/RoleSelectionScreen';
 import { CharacterCreationScreen } from './components/CharacterCreationScreen';
 import { Faction, type GameState, type StoryOutcome, type Era, type Role, type CharacterProfile } from './types';
 import { saveGame, loadGame, clearSave } from './services/saveService';
@@ -67,12 +66,7 @@ const App: React.FC = () => {
 
   const handleSelectFaction = useCallback((selectedFaction: Faction) => {
     setFaction(selectedFaction);
-    
-    if (selectedFaction === Faction.GalacticRepublic || selectedFaction === Faction.Separatists) {
-      setGameState('roleSelect');
-    } else {
-      setGameState('characterCreation');
-    }
+    setGameState('roleSelect');
   }, []);
   
   const handleSelectRole = useCallback((selectedRole: Role) => {
@@ -173,10 +167,10 @@ const App: React.FC = () => {
         return <EraSelectionScreen onSelectEra={handleSelectEra} onLoadGame={handleLoadGame} hasSaveData={saveDataExists} theme={theme} tt={tt} />;
       case 'start':
         if (!era) return null;
-        return <StartScreen era={era} onSelectFaction={handleSelectFaction} isVip={settings.isVip} theme={theme} tt={tt}/>;
+        return <StartScreen onSelectFaction={handleSelectFaction} era={era} theme={theme} tt={tt} />;
       case 'roleSelect':
         if (!faction) return null;
-        return <RoleSelectionScreen faction={faction} onSelectRole={handleSelectRole} theme={theme} tt={tt} />;
+        return <RoleSelectionScreen faction={faction} onSelectRole={handleSelectRole} isVip={settings.isVip} theme={theme} tt={tt} />;
       case 'characterCreation':
         return <CharacterCreationScreen onConfirm={handleCharacterCreation} nickname={settings.nickname} theme={theme} tt={tt} />;
       case 'playing':

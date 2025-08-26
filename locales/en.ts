@@ -9,14 +9,17 @@ export const en = {
     chooseYourPath: 'CHOOSE YOUR PATH',
     eraRepublicDescription: "Experience the epic conflict between the Galactic Republic and the Separatist Alliance, where Jedi Knights lead clone armies against endless droid forces.",
     eraCivilWarDescription: "Join the struggle for the galaxy's soul. Will you enforce order with the tyrannical Galactic Empire or fight for freedom with the Rebel Alliance?",
-    factionEmpireDescription: 'Bring order to the galaxy through strength and power. Crush the rebellion and enforce the will of the Emperor.',
-    factionRebelDescription: 'Fight for freedom and restore the Republic. Hope is your greatest weapon against the tyranny of the Empire.',
-    factionRepublicDescription: 'For the Republic! Uphold democracy and peace across the galaxy as a Jedi Knight or elite Clone Trooper.',
-    factionSeparatistDescription: 'Break away from the corrupt Republic. Command vast droid armies to secure independence for your systems.',
+    factionRepublicDescription: "The defenders of peace and justice, the Republic stands against the growing threat of the Separatists with its army of clone troopers led by Jedi Generals.",
+    factionSeparatistDescription: "Seeking to break away from the Republic, the Separatist Alliance leverages a massive droid army to fight for their independence.",
+    factionEmpireDescription: "Forged from the ashes of the Republic, the Empire rules the galaxy through fear and military might, seeking to crush any who oppose it.",
+    factionRebelDescription: "A brave coalition of freedom fighters, the Rebel Alliance stands as the galaxy's last hope against the tyranny of the Empire.",
     roleJediDescription: "Begin your journey as a Force-sensitive youth. Wield a training saber, learn from Jedi Masters, and protect the galaxy from darkness.",
     roleCloneDescription: "Bred for battle, you are one of millions of elite soldiers. Follow orders, use advanced weaponry, and fight for the Republic.",
     roleSithDescription: "Embrace the power of the dark side. As an apprentice to a mysterious master, your ambition is your greatest weapon.",
     roleSeparatistCommanderDescription: "A brilliant tactician and leader. Command droid legions and fleets to execute the will of the Separatist Council.",
+    roleEmpireOperativeDescription: "An elite agent of the Empire. Infiltrate, sabotage, and eliminate key targets to crush the Rebel Alliance and enforce the Emperor's will.",
+    roleRebelOperativeDescription: "A resourceful spy and soldier for the Rebellion. Fight from the shadows to liberate the galaxy from the Empire's grasp.",
+    roleBountyHunterDescription: "Forge your own path. Take on contracts from the highest bidder, navigating the treacherous underworld with skill and cunning.",
 
 
     // Character Creation
@@ -24,13 +27,13 @@ export const en = {
     nameLabel: 'Name / Callsign',
     namePlaceholder: 'Enter your name',
     ageLabel: 'Age',
-    agePlaceholder: "e.g., 25",
+    agePlaceholder: 'e.g., 25 standard years',
     speciesLabel: 'Species',
-    speciesPlaceholder: "e.g., Human, Twi'lek, Wookiee",
+    speciesPlaceholder: 'e.g., Human, Twi\'lek, Wookiee',
+    backstoryLabel: 'Backstory',
+    backstoryPlaceholder: 'Describe your past. Where are you from? What drives you?',
     startingSituationLabel: 'Opening Scene',
     startingSituationPlaceholder: "Describe your immediate situation. e.g., 'In the trenches of Felucia, pinned down.'",
-    backstoryLabel: 'Backstory (Optional)',
-    backstoryPlaceholder: 'Describe your past. Where are you from? What drives you?',
     confirmCharacterButton: 'BEGIN MISSION',
     nameRequiredError: 'Name is required to begin.',
 
@@ -83,26 +86,27 @@ export const en = {
     confirm: 'CONFIRM',
 
     // Gemini Service
-    playerRoleSoldier: 'a soldier',
     playerRoleOperative: 'Operative',
     roleJedi: 'a Jedi Youngling',
     roleClone: 'a Clone Trooper',
     roleSith: 'a Sith Acolyte',
     roleSeparatistCommander: 'a Separatist Commander',
+    roleEmpireOperative: 'an Imperial Operative',
+    roleRebelOperative: 'a Rebel Operative',
+    roleBountyHunter: 'a Bounty Hunter',
     turn: 'Turn',
-    noBackstoryProvided: 'No backstory provided.',
     geminiSystemInstruction: `You are a storyteller for a text-based adventure game called 'STAR WARS BATTLEFRONT 3'. The story is set during the '{era}' era. The player is a {role} in the {faction}. Create an epic, branching narrative based on the player's choices. The tone should be cinematic and true to the Star Wars universe. Ensure each turn presents a challenging scenario with four distinct choices. The player may also provide a custom action. If they do, their prompt will start with 'Player's custom action:'. React to this custom action realistically within the game world. If the game is ending in victory or defeat, you can provide an empty array for choices. The game should build up to a climax, and not end in victory or defeat too quickly.`,
     geminiInitialPrompt: `This is the very first turn. Start the story for a character with the following profile:
 - Name: {name}
 - Age: {age}
 - Species: {species}
+- Backstory: {backstory}
 - Faction: {faction}
 - Era: {era}
 - Role: {role}
 - Starting Situation: {startingSituation}
-- Backstory: {backstory}
 
-Generate a compelling opening narrative and present the first four choices.`,
+Generate a compelling opening narrative based on all these details and present the first four choices.`,
     geminiUserPrompt: `This is a new turn in the story.
 Player's Era: {era}
 Player's Faction: {faction}

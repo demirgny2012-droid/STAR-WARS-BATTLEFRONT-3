@@ -10,8 +10,8 @@ This is a text-based narrative adventure game set in the iconic Star Wars univer
 - **Dynamic Storytelling:** The narrative is generated in real-time by the Gemini API, reacting to your choices for a unique experience every time.
 - **Branching Narrative:** Your decisions directly impact the story, leading to different scenarios, challenges, and outcomes.
 - **Iconic Eras:** Play through two distinct periods of the Star Wars saga: *The Clone Wars* and *The Galactic Civil War*.
-- **Multiple Factions:** Align with the Galactic Republic, the Separatist Alliance, the Rebel Alliance, or the Galactic Empire. A special Bounty Hunter faction is available for VIPs.
-- **Character Creation:** Define your character's name, age, species, and backstory to personalize your adventure.
+- **Multiple Factions & Roles:** Align with the Galactic Republic (Jedi or Clone), the Separatist Alliance (Sith or Commander), the Rebel Alliance, or the Galactic Empire.
+- **Detailed Character Creation:** Define your character's name, age, species, and backstory to personalize your adventure.
 - **Save System:** Your progress is automatically saved, allowing you to continue your mission later.
 - **Responsive Design:** Enjoy a seamless experience on both desktop and mobile browsers.
 - **Multilingual Support:** Currently available in English and Turkish.
@@ -27,9 +27,9 @@ This project requires a Google Gemini API key to function. For security, your ke
 
 **Step 2: Set the API Key as a Secret**
 
-- In your development environment, find the section for managing "Secrets" or "Environment Variables".
+- In your development or deployment environment (like Netlify or Vercel), find the section for managing "Secrets" or "Environment Variables".
 - Create a new secret with the following name: `API_KEY`
 - In the value field, paste the API key you copied from Google AI Studio.
-- Save the secret.
+- Save the secret and redeploy if necessary.
 
 Once the `API_KEY` secret is set, the application will have secure access to it and will run correctly.

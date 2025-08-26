@@ -11,6 +11,7 @@ export const EnvironmentErrorScreen: React.FC = () => (
     </p>
     <div className="text-left text-lg text-gray-400 leading-relaxed bg-black/30 p-6 rounded-md">
       <p className="font-semibold text-yellow-400 mb-2">For the developer:</p>
+      {/* Fix: Updated environment variable name to be consistent with API key handling changes. */}
       <p className="mb-2">
         This application requires a Google Gemini API key to function. Please set it as an environment variable named <code className="bg-black px-2 py-1 mx-1 rounded-md text-yellow-400 font-mono">API_KEY</code> in your deployment environment.
       </p>

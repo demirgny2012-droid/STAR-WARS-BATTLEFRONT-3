@@ -9,17 +9,18 @@ interface CharacterCreationScreenProps {
   onConfirm: (profile: CharacterProfile) => void;
   nickname: string;
   theme: Theme;
-  tt: (key: keyof typeof locales.en) => string;
+  tt: (key: keyof typeof locales.en, replacements?: { [key: string]: string | number }) => string;
 }
 
 const InputField: React.FC<{
   label: string;
-  id: string;
+  id: keyof CharacterProfile;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   theme: Theme;
-}> = ({ label, id, value, onChange, placeholder, theme }) => (
+  required?: boolean;
+}> = ({ label, id, value, onChange, placeholder, theme, required }) => (
   <div>
     <label htmlFor={id} className={`block text-lg font-semibold ${theme.text.subheader} mb-2`}>
       {label}
@@ -32,14 +33,14 @@ const InputField: React.FC<{
       onChange={onChange}
       placeholder={placeholder}
       className={`w-full bg-gray-800 border-2 ${theme.border.secondary} rounded-md p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${theme.ring.faction('border-yellow-400')}`}
-      required={id === 'name'}
+      required={required}
     />
   </div>
 );
 
 const TextareaField: React.FC<{
     label: string;
-    id: string;
+    id: keyof CharacterProfile;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     placeholder: string;
@@ -68,8 +69,8 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
     name: nickname || '',
     age: '',
     species: '',
-    startingSituation: '',
     backstory: '',
+    startingSituation: '',
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -93,7 +94,7 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
     <div className={`w-full max-w-2xl bg-gray-900 bg-opacity-75 border-2 ${theme.border.primary} p-4 sm:p-6 md:p-8 rounded-lg shadow-2xl animate-fade-in-up`}>
       <h3 className={`text-3xl font-bold ${theme.text.header} text-center mb-6 tracking-widest`}>{tt('characterCreationTitle')}</h3>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <InputField 
                 label={tt('nameLabel')}
                 id="name"
@@ -101,8 +102,9 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
                 onChange={handleChange}
                 placeholder={tt('namePlaceholder')}
                 theme={theme}
+                required
             />
-            <InputField 
+             <InputField 
                 label={tt('ageLabel')}
                 id="age"
                 value={profile.age}
@@ -111,6 +113,7 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
                 theme={theme}
             />
         </div>
+        
         <InputField 
             label={tt('speciesLabel')}
             id="species"
@@ -119,14 +122,7 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
             placeholder={tt('speciesPlaceholder')}
             theme={theme}
         />
-        <TextareaField 
-            label={tt('startingSituationLabel')}
-            id="startingSituation"
-            value={profile.startingSituation}
-            onChange={handleChange}
-            placeholder={tt('startingSituationPlaceholder')}
-            theme={theme}
-        />
+
         <TextareaField 
             label={tt('backstoryLabel')}
             id="backstory"
@@ -135,6 +131,16 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
             placeholder={tt('backstoryPlaceholder')}
             theme={theme}
             rows={4}
+        />
+       
+        <TextareaField 
+            label={tt('startingSituationLabel')}
+            id="startingSituation"
+            value={profile.startingSituation}
+            onChange={handleChange}
+            placeholder={tt('startingSituationPlaceholder')}
+            theme={theme}
+            rows={2}
         />
 
         {error && <p className={`text-center font-semibold ${theme.text.danger}`}>{error}</p>}

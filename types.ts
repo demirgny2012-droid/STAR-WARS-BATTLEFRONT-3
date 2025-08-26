@@ -1,3 +1,4 @@
+
 export enum Era {
   Republic = 'The Clone Wars',
   CivilWar = 'The Galactic Civil War',
@@ -16,6 +17,9 @@ export enum Role {
   Clone = 'Clone Trooper',
   SithAcolyte = 'Sith Acolyte',
   SeparatistCommander = 'Separatist Commander',
+  EmpireOperative = 'Empire Operative',
+  RebelOperative = 'Rebel Operative',
+  BountyHunter = 'Bounty Hunter',
 }
 
 export type GameState = 'eraSelect' | 'start' | 'roleSelect' | 'characterCreation' | 'playing' | 'gameover';
@@ -39,6 +43,6 @@ export interface CharacterProfile {
   name: string;
   age: string;
   species: string;
-  startingSituation: string;
   backstory: string;
+  startingSituation: string;
 }

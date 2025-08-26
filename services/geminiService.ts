@@ -10,6 +10,9 @@ const roleToPromptKeyMap: Record<Role, keyof typeof locales.en> = {
   [Role.Clone]: 'roleClone',
   [Role.SithAcolyte]: 'roleSith',
   [Role.SeparatistCommander]: 'roleSeparatistCommander',
+  [Role.EmpireOperative]: 'roleEmpireOperative',
+  [Role.RebelOperative]: 'roleRebelOperative',
+  [Role.BountyHunter]: 'roleBountyHunter',
 };
 
 const storySchema = {
@@ -78,8 +81,8 @@ export const getGameTurn = async (
         name: characterProfile.name,
         age: characterProfile.age,
         species: characterProfile.species,
+        backstory: characterProfile.backstory,
         startingSituation: characterProfile.startingSituation,
-        backstory: characterProfile.backstory || tt('noBackstoryProvided'),
     });
   } else {
       userPrompt = tt('geminiUserPrompt', {
