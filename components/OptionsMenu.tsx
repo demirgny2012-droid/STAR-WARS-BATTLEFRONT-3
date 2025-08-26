@@ -4,6 +4,8 @@ import type { Settings } from '../services/settingsService';
 import { CloseIcon } from './Icons';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';
+import { playHover, playClick, playConfirm } from '../services/audioService';
+
 
 interface OptionsMenuProps {
   isOpen: boolean;
@@ -36,19 +38,26 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
   
   const handleVipSubmit = () => {
     if (vipInput.toLowerCase() === 'jarjarbinks') {
+        playConfirm();
         onSettingsChange({ isVip: true });
         setVipMessage(tt('vipCodeSuccess'));
         setTimeout(() => setVipMessage(''), 2000);
     } else {
+        playClick();
         setVipMessage(tt('vipCodeError'));
         setTimeout(() => setVipMessage(''), 2000);
     }
     setVipInput('');
   }
+  
+  const handleSaveNickname = () => {
+    playClick();
+    onSettingsChange({ nickname: nicknameInput });
+  }
 
   return (
     <div 
-        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in"
+        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-scale-in"
         onClick={onClose}
     >
       <div 
@@ -59,7 +68,11 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
         onClick={e => e.stopPropagation()} // Prevent click inside from closing the modal
       >
         <button
-          onClick={onClose}
+          onClick={() => {
+            playClick();
+            onClose();
+          }}
+          onMouseEnter={playHover}
           aria-label="Close options menu"
           className="absolute top-3 right-3 text-gray-500 hover:text-white transition-colors"
         >
@@ -77,12 +90,13 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                   type="text"
                   value={nicknameInput}
                   onChange={(e) => setNicknameInput(e.target.value)}
-                  onBlur={() => onSettingsChange({ nickname: nicknameInput })}
+                  onBlur={handleSaveNickname}
                   placeholder={tt('nicknamePlaceholder')}
                   className={`flex-grow bg-gray-800 border ${theme.border.secondary} rounded-md p-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${theme.ring.faction('border-yellow-400')}`}
                 />
                 <button
-                  onClick={() => onSettingsChange({ nickname: nicknameInput })}
+                  onClick={handleSaveNickname}
+                  onMouseEnter={playHover}
                   className="px-4 py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition-colors"
                 >
                   {tt('save')}
@@ -95,13 +109,15 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
               <h3 className={`text-lg font-semibold ${theme.text.subheader} mb-2`}>{tt('languageTitle')}</h3>
               <div className="flex justify-between items-center bg-black/50 p-1 rounded-md">
                 <button
-                  onClick={() => onSettingsChange({ language: 'en' })}
+                  onClick={() => { playClick(); onSettingsChange({ language: 'en' }); }}
+                  onMouseEnter={playHover}
                   className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${settings.language === 'en' ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
                 >
                   ENGLISH
                 </button>
                 <button
-                  onClick={() => onSettingsChange({ language: 'tr' })}
+                  onClick={() => { playClick(); onSettingsChange({ language: 'tr' }); }}
+                  onMouseEnter={playHover}
                   className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${settings.language === 'tr' ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
                 >
                   TÜRKÇE
@@ -116,12 +132,34 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                 {speedOptions.map(opt => (
                   <button
                     key={opt.labelKey}
-                    onClick={() => handleTypingSpeedChange(opt.value)}
+                    onClick={() => { playClick(); handleTypingSpeedChange(opt.value); }}
+                    onMouseEnter={playHover}
                     className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${settings.typingSpeed === opt.value ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
                   >
                     {tt(opt.labelKey as keyof typeof locales.en)}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Sound Effects */}
+            <div>
+              <h3 className={`text-lg font-semibold ${theme.text.subheader} mb-2`}>{tt('soundEffectsTitle')}</h3>
+              <div className="flex justify-between items-center bg-black/50 p-1 rounded-md">
+                <button
+                  onClick={() => { playClick(); onSettingsChange({ soundEnabled: true }); }}
+                  onMouseEnter={playHover}
+                  className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${settings.soundEnabled ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
+                >
+                  {tt('soundOn')}
+                </button>
+                <button
+                  onClick={() => { playClick(); onSettingsChange({ soundEnabled: false }); }}
+                  onMouseEnter={playHover}
+                  className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${!settings.soundEnabled ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
+                >
+                  {tt('soundOff')}
+                </button>
               </div>
             </div>
 
@@ -139,6 +177,7 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                     />
                     <button
                       onClick={handleVipSubmit}
+                      onMouseEnter={playHover}
                       className="px-4 py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition-colors"
                     >
                       {tt('submit')}
@@ -153,13 +192,15 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                 <h3 className={`text-lg font-semibold ${theme.text.danger} mb-3 text-center`}>{tt('dangerZoneTitle')}</h3>
                 <div className="flex flex-col space-y-3">
                     <button
-                        onClick={onRestart}
+                        onClick={() => { playConfirm(); onRestart(); }}
+                        onMouseEnter={playHover}
                         className="w-full py-3 bg-red-800/80 text-white font-bold rounded hover:bg-red-700 transition-colors"
                     >
                         {tt('restartCampaign')}
                     </button>
                     <button
-                        onClick={onClearSave}
+                        onClick={() => { playConfirm(); onClearSave(); }}
+                        onMouseEnter={playHover}
                         className="w-full py-3 bg-red-800/80 text-white font-bold rounded hover:bg-red-700 transition-colors"
                     >
                         {tt('clearSavedMission')}

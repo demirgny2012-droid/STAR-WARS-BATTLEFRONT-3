@@ -15,6 +15,8 @@ export const tr = {
     factionSeparatistDescription: 'Yozlaşmış Cumhuriyet\'ten ayrılın. Sistemlerinizin bağımsızlığını güvence altına almak için devasa droid ordularını komuta edin.',
     roleJediDescription: "Güce duyarlı bir genç olarak yolculuğunuza başlayın. Bir eğitim saberı kullanın, Jedi Ustalarından öğrenin ve galaksiyi karanlıktan koruyun.",
     roleCloneDescription: "Savaş için yetiştirildiniz, milyonlarca seçkin askerden birisiniz. Emirleri uygulayın, gelişmiş silahlar kullanın ve Cumhuriyet için savaşın.",
+    roleSithDescription: "Karanlık tarafın gücünü kucaklayın. Gizemli bir ustanın çırağı olarak, hırsınız en büyük silahınızdır.",
+    roleSeparatistCommanderDescription: "Parlak bir taktikçi ve lider. Ayrılıkçı Konseyi'nin iradesini yerine getirmek için droid lejyonlarını ve filolarını komuta edin.",
 
     // Character Creation
     characterCreationTitle: 'KARAKTER PROFİLİ',
@@ -60,6 +62,9 @@ export const tr = {
     speedNormal: 'Normal',
     speedFast: 'Hızlı',
     speedInstant: 'Anında',
+    soundEffectsTitle: 'Sound Effects',
+    soundOn: 'On',
+    soundOff: 'Off',
     vipCodeTitle: 'VIP Kodu',
     vipCodePlaceholder: 'VIP kodunu girin...',
     vipCodeSuccess: 'VIP Aktive Edildi!',
@@ -81,6 +86,8 @@ export const tr = {
     playerRoleOperative: 'Operatör',
     roleJedi: 'bir Jedi Çırağı',
     roleClone: 'bir Klon Askeri',
+    roleSith: 'bir Sith Çırağı',
+    roleSeparatistCommander: 'bir Ayrılıkçı Komutan',
     turn: 'Tur',
     noBackstoryProvided: 'Geçmiş hikayesi sağlanmadı.',
     geminiSystemInstruction: `Sen 'STAR WARS BATTLEFRONT 3' adlı metin tabanlı bir macera oyununun hikaye anlatıcısısın. Hikaye '{era}' döneminde geçiyor. Oyuncu, {faction} tarafında bir {role}. Oyuncunun seçimlerine dayalı olarak destansı, dallanan bir anlatı oluştur. Ton sinematik ve Star Wars evrenine sadık olmalı. Her turda dört farklı seçenekle zorlu bir senaryo sunduğundan emin ol. Oyuncu ayrıca özel bir eylem de sağlayabilir. Eğer yaparsa, istemleri 'Oyuncunun özel eylemi:' ile başlayacaktır. Bu özel eyleme oyun dünyası içinde gerçekçi bir şekilde tepki ver. Oyun zafer veya yenilgiyle bitiyorsa, seçenekler için boş bir dizi sağlayabilirsin. Oyun bir zirveye ulaşmalı ve çok çabuk zafer veya yenilgiyle bitmemelidir.`,

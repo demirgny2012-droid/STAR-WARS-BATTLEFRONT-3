@@ -1,17 +1,16 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
-import { type StorySegment, type Language, type Era, type Faction, type Role, type CharacterProfile } from '../types';
-import { t } from '../locales';
+import { type StorySegment, type Language, type Era, type Faction, Role, type CharacterProfile } from '../types';
+import { t, locales } from '../locales';
 
-// IMPORTANT: Replace this placeholder with your actual Google Gemini API key.
-// For local development, you can paste your key here directly.
-// For deployment, use your hosting provider's secret management to replace this value during the build process.
-const API_KEY = "GEMINI_API_KEY_PLACEHOLDER";
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-if (API_KEY === "GEMINI_API_KEY_PLACEHOLDER") {
-  console.warn("Gemini API key is missing. Please replace 'GEMINI_API_KEY_PLACEHOLDER' in services/geminiService.ts with your actual API key.");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY! });
+const roleToPromptKeyMap: Record<Role, keyof typeof locales.en> = {
+  [Role.Jedi]: 'roleJedi',
+  [Role.Clone]: 'roleClone',
+  [Role.SithAcolyte]: 'roleSith',
+  [Role.SeparatistCommander]: 'roleSeparatistCommander',
+};
 
 const storySchema = {
   type: Type.OBJECT,
@@ -55,9 +54,10 @@ export const getGameTurn = async (
   history: string[],
   language: Language,
 ): Promise<StorySegment> => {
+
   const tt = (key: Parameters<typeof t>[1], replacements?: { [key: string]: string | number | undefined | null}) => t(language, key, replacements);
   
-  const playerRoleDescription = role ?? tt('playerRoleOperative');
+  const playerRoleDescription = role ? tt(roleToPromptKeyMap[role]) : tt('playerRoleOperative');
 
   const systemInstruction = tt('geminiSystemInstruction', {
     era,

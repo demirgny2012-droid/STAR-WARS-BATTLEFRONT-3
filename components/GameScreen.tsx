@@ -7,6 +7,7 @@ import { useTypingEffect } from '../hooks/useTypingEffect';
 import { FACTION_DETAILS } from '../constants';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';
+import { playHover, playClick } from '../services/audioService';
 
 interface GameScreenProps {
   era: Era;
@@ -32,7 +33,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
   const factionBorderColor = theme.border.faction(factionDetails.color);
   const factionRingColor = theme.ring.faction(factionDetails.color);
   const factionTextColor = theme.text.faction(factionDetails.color);
-  const factionRingHoverColor = theme.ring.factionHover(factionDetails.color);
   
   const fetchNextTurn = useCallback(async () => {
     setIsLoading(true);
@@ -61,6 +61,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
   const handleChoice = (choice: StoryChoice) => {
     if (isLoading) return;
     
+    playClick();
     if (isTyping) {
       skipTyping();
       setTimeout(() => onChoiceMade(choice.prompt), 50);
@@ -72,6 +73,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
   const handleCustomChoiceSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isLoading || !customChoiceText.trim()) return;
+    playClick();
 
     const submit = () => {
         onChoiceMade(`${tt('customActionPrefix')}: ${customChoiceText}`); 
@@ -87,11 +89,11 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
   };
 
   if (isLoading && !storySegment) {
-    return <div className="animate-fade-in"><LoadingSpinner theme={theme} tt={tt} /></div>;
+    return <div className="animate-fade-in-up"><LoadingSpinner theme={theme} tt={tt} /></div>;
   }
 
   return (
-    <div className={`w-full max-w-4xl bg-gray-900 bg-opacity-75 border-2 ${factionBorderColor} rounded-lg p-4 sm:p-6 shadow-2xl animate-fade-in flex flex-col gap-6`}>
+    <div className={`w-full max-w-4xl bg-gray-900 bg-opacity-75 border-2 ${factionBorderColor} rounded-lg p-4 sm:p-6 shadow-2xl animate-fade-in-up flex flex-col gap-6`}>
       <div 
         className="narrative-container min-h-[120px] sm:min-h-[150px] md:min-h-[200px] bg-black/50 p-4 rounded-md cursor-pointer"
         onClick={isTyping ? skipTyping : undefined}
@@ -108,7 +110,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
             <button
               key={index}
               onClick={() => handleChoice(choice)}
-              className={`p-4 border ${theme.border.secondary} rounded-lg text-left transition-all duration-200 hover:bg-gray-800/70 hover:border-yellow-400 focus:outline-none focus:ring-2 ${factionRingColor}`}
+              onMouseEnter={playHover}
+              className={`p-4 border ${theme.border.secondary} rounded-lg text-left transition-all duration-200 hover:bg-gray-800/70 hover:border-yellow-400 focus:outline-none focus:ring-2 ${factionRingColor} choice-button`}
             >
               <span className={`${factionTextColor} font-bold`}>{`${tt('choice')} ${index + 1}: `}</span>
               <span className={`${theme.text.primary}`}>{choice.text}</span>
@@ -116,7 +119,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
           ))}
 
           {storySegment.choices.length > 0 && (
-              <form onSubmit={handleCustomChoiceSubmit} className="md:col-span-2 flex flex-col sm:flex-row gap-2">
+              <form onSubmit={handleCustomChoiceSubmit} className="md:col-span-2 flex flex-col sm:flex-row gap-2 custom-choice-form">
                 <input
                   type="text"
                   value={customChoiceText}
@@ -127,6 +130,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
                 />
                 <button
                   type="submit"
+                  onMouseEnter={playHover}
                   className={`px-4 py-3 sm:py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition-colors disabled:bg-gray-600`}
                   disabled={isLoading || !customChoiceText.trim()}
                 >

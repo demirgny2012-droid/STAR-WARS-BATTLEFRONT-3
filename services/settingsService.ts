@@ -1,3 +1,4 @@
+
 import type { Language } from '../types';
 
 export interface Settings {
@@ -5,6 +6,7 @@ export interface Settings {
   nickname: string;
   isVip: boolean;
   language: Language;
+  soundEnabled: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -12,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = {
   nickname: '',
   isVip: false,
   language: 'en',
+  soundEnabled: true,
 };
 
 const SETTINGS_KEY = 'star-wars-battlefront-3-settings';

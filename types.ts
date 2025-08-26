@@ -14,6 +14,8 @@ export enum Faction {
 export enum Role {
   Jedi = 'Jedi Youngling',
   Clone = 'Clone Trooper',
+  SithAcolyte = 'Sith Acolyte',
+  SeparatistCommander = 'Separatist Commander',
 }
 
 export type GameState = 'eraSelect' | 'start' | 'roleSelect' | 'characterCreation' | 'playing' | 'gameover';

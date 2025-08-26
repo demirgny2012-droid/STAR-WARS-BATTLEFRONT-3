@@ -1,8 +1,10 @@
+
 import type React from 'react';
 import { ERAS } from '../constants';
 import type { Era } from '../types';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';
+import { playHover, playConfirm } from '../services/audioService';
 
 interface EraSelectionScreenProps {
   onSelectEra: (era: Era) => void;
@@ -14,11 +16,15 @@ interface EraSelectionScreenProps {
 
 export const EraSelectionScreen: React.FC<EraSelectionScreenProps> = ({ onSelectEra, onLoadGame, hasSaveData, theme, tt }) => {
   return (
-    <div className="w-full text-center animate-fade-in">
+    <div className="w-full text-center animate-fade-in-up">
       {hasSaveData && (
         <div className="mb-8">
           <button
-            onClick={onLoadGame}
+            onClick={() => {
+              playConfirm();
+              onLoadGame();
+            }}
+            onMouseEnter={playHover}
             className="px-8 py-3 bg-green-500 text-white font-bold text-lg rounded-md transition-transform duration-300 hover:scale-110 hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50"
           >
             {tt('continueMission')}
@@ -35,7 +41,11 @@ export const EraSelectionScreen: React.FC<EraSelectionScreenProps> = ({ onSelect
             return (
               <button
                 key={eraDetails.name}
-                onClick={() => onSelectEra(eraDetails.name)}
+                onClick={() => {
+                  playConfirm();
+                  onSelectEra(eraDetails.name)
+                }}
+                onMouseEnter={playHover}
                 className={`w-full md:w-96 p-4 sm:p-6 border-2 ${borderColor} rounded-lg bg-black bg-opacity-50 transition-all duration-300 ease-in-out transform hover:scale-105 ${hoverColor} focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-black ${ringColor}`}
               >
                 <div className="flex flex-col items-center gap-4">

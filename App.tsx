@@ -1,4 +1,5 @@
 
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { EraSelectionScreen } from './components/EraSelectionScreen';
 import { StartScreen } from './components/StartScreen';
@@ -14,9 +15,12 @@ import { OptionsButton } from './components/OptionsButton';
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { defaultTheme, vipTheme } from './theme';
 import { t, locales } from './locales';
+import { initAudio, toggleSound } from './services/audioService';
+import { EnvironmentErrorScreen } from './components/EnvironmentErrorScreen';
 
 
 const App: React.FC = () => {
+  const [isApiKeyMissing] = useState(!process.env.API_KEY);
   const [gameState, setGameState] = useState<GameState>('eraSelect');
   const [era, setEra] = useState<Era | null>(null);
   const [faction, setFaction] = useState<Faction | null>(null);
@@ -39,6 +43,7 @@ const App: React.FC = () => {
     setSaveDataExists(!!savedGame);
     const loadedSettings = loadSettings();
     setSettings(loadedSettings);
+    initAudio(loadedSettings.soundEnabled);
   }, []);
 
   const theme = settings.isVip ? vipTheme : defaultTheme;
@@ -48,6 +53,9 @@ const App: React.FC = () => {
     setSettings(prev => {
         const updated = { ...prev, ...newSettings };
         saveSettings(updated);
+        if (newSettings.soundEnabled !== undefined) {
+          toggleSound(newSettings.soundEnabled);
+        }
         return updated;
     });
   }, []);
@@ -60,7 +68,7 @@ const App: React.FC = () => {
   const handleSelectFaction = useCallback((selectedFaction: Faction) => {
     setFaction(selectedFaction);
     
-    if (selectedFaction === Faction.GalacticRepublic) {
+    if (selectedFaction === Faction.GalacticRepublic || selectedFaction === Faction.Separatists) {
       setGameState('roleSelect');
     } else {
       setGameState('characterCreation');
@@ -73,8 +81,8 @@ const App: React.FC = () => {
   }, []);
 
   const handleCharacterCreation = useCallback((profile: CharacterProfile) => {
-    setCharacterProfile(profile);
     handleSettingsChange({ nickname: profile.name });
+    setCharacterProfile(profile);
 
     const currentHistory: string[] = [];
     setHistory(currentHistory);
@@ -89,7 +97,7 @@ const App: React.FC = () => {
   const handleChoiceMade = useCallback((choicePrompt: string) => {
     const newHistory = [...history, choicePrompt];
     setHistory(newHistory);
-    if (era && faction) {
+    if (era && faction && characterProfile) {
       saveGame({ era, faction, role, characterProfile, history: newHistory });
     }
   }, [history, era, faction, role, characterProfile]);
@@ -156,6 +164,10 @@ const App: React.FC = () => {
   const backgroundUrl = "https://storage.googleapis.com/aistudio-project-files/e448b11a-a10e-436f-b2f5-b6d392ca4301/S52C_n4iTjG4xJ0z_star-wars-logo.png";
 
   const renderGameState = () => {
+    if (isApiKeyMissing) {
+      return <EnvironmentErrorScreen />;
+    }
+
     switch (gameState) {
       case 'eraSelect':
         return <EraSelectionScreen onSelectEra={handleSelectEra} onLoadGame={handleLoadGame} hasSaveData={saveDataExists} theme={theme} tt={tt} />;
@@ -163,7 +175,8 @@ const App: React.FC = () => {
         if (!era) return null;
         return <StartScreen era={era} onSelectFaction={handleSelectFaction} isVip={settings.isVip} theme={theme} tt={tt}/>;
       case 'roleSelect':
-        return <RoleSelectionScreen onSelectRole={handleSelectRole} theme={theme} tt={tt} />;
+        if (!faction) return null;
+        return <RoleSelectionScreen faction={faction} onSelectRole={handleSelectRole} theme={theme} tt={tt} />;
       case 'characterCreation':
         return <CharacterCreationScreen onConfirm={handleCharacterCreation} nickname={settings.nickname} theme={theme} tt={tt} />;
       case 'playing':
@@ -177,13 +190,15 @@ const App: React.FC = () => {
     }
   };
 
+  const showHeader = !isApiKeyMissing && (gameState === 'eraSelect' || gameState === 'start');
+
   return (
     <div
       className="bg-black text-white min-h-screen bg-contain bg-center bg-no-repeat bg-fixed"
       style={{ backgroundImage: `url('${backgroundUrl}')` }}
     >
       <div className="min-h-screen bg-black bg-opacity-75 flex flex-col items-center justify-center p-4 relative">
-        <OptionsButton onClick={() => setIsOptionsOpen(true)} />
+        {!isApiKeyMissing && <OptionsButton onClick={() => setIsOptionsOpen(true)} />}
         <OptionsMenu 
           isOpen={isOptionsOpen} 
           onClose={() => setIsOptionsOpen(false)}
@@ -204,14 +219,16 @@ const App: React.FC = () => {
           tt={tt}
         />
 
-        <header className="w-full max-w-4xl text-center mb-4 sm:mb-8">
-          <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest`} style={{ textShadow: '2px 2px 4px #000' }}>
-            {settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}
-          </h1>
-          <h2 className={`text-xl sm:text-2xl md:text-3xl font-normal ${theme.text.subheader} tracking-wider`} style={{ textShadow: '1px 1px 2px #000' }}>
-            {theme.title.sub}
-          </h2>
-        </header>
+        {showHeader && (
+          <header className="w-full max-w-4xl text-center mb-4 sm:mb-8 animate-fade-in-up">
+            <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest`} style={{ textShadow: '2px 2px 4px #000' }}>
+              {settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}
+            </h1>
+            <h2 className={`text-xl sm:text-2xl md:text-3xl font-normal ${theme.text.subheader} tracking-wider`} style={{ textShadow: '1px 1px 2px #000' }}>
+              {theme.title.sub}
+            </h2>
+          </header>
+        )}
         <main className="w-full max-w-4xl flex-grow flex items-center justify-center">
             {renderGameState()}
         </main>

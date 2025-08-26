@@ -124,4 +124,25 @@ export const ROLES: Record<Role, RoleDetails> = {
     color: 'border-slate-300',
     hoverColor: 'hover:bg-slate-700/50',
   },
+  [Role.SithAcolyte]: {
+    name: Role.SithAcolyte,
+    descriptionKey: 'roleSithDescription',
+    color: 'border-red-500',
+    hoverColor: 'hover:bg-red-900/50',
+  },
+  [Role.SeparatistCommander]: {
+    name: Role.SeparatistCommander,
+    descriptionKey: 'roleSeparatistCommanderDescription',
+    color: 'border-indigo-400',
+    hoverColor: 'hover:bg-indigo-900/50',
+  },
+};
+
+export const FACTION_ROLES: Record<Faction, Role[]> = {
+    [Faction.GalacticRepublic]: [Role.Jedi, Role.Clone],
+    [Faction.Separatists]: [Role.SithAcolyte, Role.SeparatistCommander],
+    // Other factions go directly to character creation, so they don't need roles defined here.
+    [Faction.GalacticEmpire]: [],
+    [Faction.RebelAlliance]: [],
+    [Faction.BountyHunter]: [],
 };

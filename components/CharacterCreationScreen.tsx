@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import type { CharacterProfile } from '../types';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';
+import { playHover, playConfirm } from '../services/audioService';
 
 interface CharacterCreationScreenProps {
   onConfirm: (profile: CharacterProfile) => void;
@@ -83,11 +85,12 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
         return;
     }
     setError(null);
+    playConfirm();
     onConfirm(profile);
   };
 
   return (
-    <div className={`w-full max-w-2xl bg-gray-900 bg-opacity-75 border-2 ${theme.border.primary} p-4 sm:p-6 md:p-8 rounded-lg shadow-2xl animate-fade-in`}>
+    <div className={`w-full max-w-2xl bg-gray-900 bg-opacity-75 border-2 ${theme.border.primary} p-4 sm:p-6 md:p-8 rounded-lg shadow-2xl animate-fade-in-up`}>
       <h3 className={`text-3xl font-bold ${theme.text.header} text-center mb-6 tracking-widest`}>{tt('characterCreationTitle')}</h3>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -139,6 +142,7 @@ export const CharacterCreationScreen: React.FC<CharacterCreationScreenProps> = (
         <div className="text-center pt-4">
           <button
             type="submit"
+            onMouseEnter={playHover}
             className={`px-12 py-4 bg-yellow-400 text-black font-bold text-xl rounded-md transition-transform duration-300 hover:scale-110 hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-opacity-50`}
           >
             {tt('confirmCharacterButton')}

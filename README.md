@@ -1,3 +1,4 @@
+
 # STAR WARS BATTLEFRONT 3 - A Gemini-Powered Adventure
 
 This is a text-based narrative adventure game set in the iconic Star Wars universe. Choose your side, create your character, make critical decisions, and shape your destiny in a galaxy far, far away. The dynamic, branching storyline is powered by Google's Gemini API.
@@ -15,94 +16,20 @@ This is a text-based narrative adventure game set in the iconic Star Wars univer
 - **Responsive Design:** Enjoy a seamless experience on both desktop and mobile browsers.
 - **Multilingual Support:** Currently available in English and Turkish.
 
-## Getting Started
+## Getting Started: Adding Your API Key
 
-This project is a static web application that runs entirely in the browser. It requires **no build step or local server** to run.
+This project requires a Google Gemini API key to function. For security, your key must be stored as an environment variable, **not** written directly in the code.
 
-### Prerequisites
+**Step 1: Get your API Key**
 
-You need a Google Gemini API key to run this application.
+- Visit [Google AI Studio](https://aistudio.google.com/app/apikey) to generate your free API key.
+- Copy the key to your clipboard.
 
-1.  Visit [Google AI Studio](https://aistudio.google.com/app/apikey) to generate your API key.
-2.  **Important:** Keep your API key secure and do not commit it directly into your repository.
+**Step 2: Set the API Key as a Secret**
 
-### Running Locally
+- In your development environment, find the section for managing "Secrets" or "Environment Variables".
+- Create a new secret with the following name: `API_KEY`
+- In the value field, paste the API key you copied from Google AI Studio.
+- Save the secret.
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/your-repository-name.git
-    cd your-repository-name
-    ```
-2.  Open the file `services/geminiService.ts` in a text editor.
-3.  Find the line:
-    ```typescript
-    const API_KEY = "GEMINI_API_KEY_PLACEHOLDER";
-    ```
-4.  Replace `"GEMINI_API_KEY_PLACEHOLDER"` with your actual Gemini API key. For example:
-    ```typescript
-    const API_KEY = "AIzaSy...your...key...here...";
-    ```
-5.  Save the file.
-6.  Open the `index.html` file directly in your web browser. The game will now work correctly.
-
-## Deployment
-
-### GitHub Pages
-
-This repository is ready for deployment on GitHub Pages. The recommended method uses GitHub Actions to automatically insert your API key during deployment.
-
-1.  **Repository Setup:**
-    - Push all the project files to your GitHub repository.
-
-2.  **Configure API Key as a Secret:**
-    - In your GitHub repository, go to **Settings > Secrets and variables > Actions**.
-    - Click **New repository secret**.
-    - Name the secret `API_KEY`.
-    - Paste your Gemini API key into the "Value" field.
-    - Click **Add secret**.
-
-3.  **Create GitHub Actions Workflow:**
-    - Create a new directory path in your repository: `.github/workflows/`.
-    - Inside that path, create a new file named `deploy.yml`.
-    - Copy and paste the following content into `deploy.yml`:
-    ```yml
-    name: Deploy to GitHub Pages
-
-    on:
-      push:
-        branches:
-          - main # Or your default branch
-
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
-    jobs:
-      build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Checkout
-            uses: actions/checkout@v4
-
-          - name: Replace API Key
-            run: |
-              sed -i 's/GEMINI_API_KEY_PLACEHOLDER/${{ secrets.API_KEY }}/g' services/geminiService.ts
-            
-          - name: Upload artifact
-            uses: actions/upload-pages-artifact@v3
-            with:
-              path: .
-
-          - name: Deploy to GitHub Pages
-            id: deployment
-            uses: actions/deploy-pages@v4
-
-    ```
-4.  **Enable GitHub Pages:**
-    - In your repository's **Settings > Pages**.
-    - Under "Build and deployment", select **GitHub Actions** as the source.
-
-5.  **Launch:**
-    - Commit and push your changes. The GitHub Action will run automatically.
-    - After the workflow runs successfully, your site will be live at `https://<your-username>.github.io/<your-repo-name>/`.
+Once the `API_KEY` secret is set, the application will have secure access to it and will run correctly.

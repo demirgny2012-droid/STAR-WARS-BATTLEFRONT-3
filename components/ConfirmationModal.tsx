@@ -1,6 +1,8 @@
+
 import React from 'react';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';
+import { playHover, playClick, playConfirm } from '../services/audioService';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -17,8 +19,11 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, on
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-60 animate-fade-in"
-      onClick={onClose}
+      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-60 animate-scale-in"
+      onClick={() => {
+        playClick();
+        onClose();
+      }}
     >
       <div
         role="dialog"
@@ -31,13 +36,21 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, on
         <p className={`${theme.text.primary} mb-6`}>{message}</p>
         <div className="flex justify-center gap-4">
           <button
-            onClick={onClose}
+            onClick={() => {
+              playClick();
+              onClose();
+            }}
+            onMouseEnter={playHover}
             className="px-6 py-2 bg-gray-600 text-white font-bold rounded hover:bg-gray-500 transition-colors"
           >
             {tt('cancel')}
           </button>
           <button
-            onClick={onConfirm}
+            onClick={() => {
+              playConfirm();
+              onConfirm();
+            }}
+            onMouseEnter={playHover}
             className="px-6 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-500 transition-colors"
           >
             {tt('confirm')}

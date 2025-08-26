@@ -15,6 +15,9 @@ export const en = {
     factionSeparatistDescription: 'Break away from the corrupt Republic. Command vast droid armies to secure independence for your systems.',
     roleJediDescription: "Begin your journey as a Force-sensitive youth. Wield a training saber, learn from Jedi Masters, and protect the galaxy from darkness.",
     roleCloneDescription: "Bred for battle, you are one of millions of elite soldiers. Follow orders, use advanced weaponry, and fight for the Republic.",
+    roleSithDescription: "Embrace the power of the dark side. As an apprentice to a mysterious master, your ambition is your greatest weapon.",
+    roleSeparatistCommanderDescription: "A brilliant tactician and leader. Command droid legions and fleets to execute the will of the Separatist Council.",
+
 
     // Character Creation
     characterCreationTitle: 'CHARACTER PROFILE',
@@ -60,6 +63,9 @@ export const en = {
     speedNormal: 'Normal',
     speedFast: 'Fast',
     speedInstant: 'Instant',
+    soundEffectsTitle: 'Sound Effects',
+    soundOn: 'On',
+    soundOff: 'Off',
     vipCodeTitle: 'VIP Code',
     vipCodePlaceholder: 'Enter VIP code...',
     vipCodeSuccess: 'VIP Activated!',
@@ -81,6 +87,8 @@ export const en = {
     playerRoleOperative: 'Operative',
     roleJedi: 'a Jedi Youngling',
     roleClone: 'a Clone Trooper',
+    roleSith: 'a Sith Acolyte',
+    roleSeparatistCommander: 'a Separatist Commander',
     turn: 'Turn',
     noBackstoryProvided: 'No backstory provided.',
     geminiSystemInstruction: `You are a storyteller for a text-based adventure game called 'STAR WARS BATTLEFRONT 3'. The story is set during the '{era}' era. The player is a {role} in the {faction}. Create an epic, branching narrative based on the player's choices. The tone should be cinematic and true to the Star Wars universe. Ensure each turn presents a challenging scenario with four distinct choices. The player may also provide a custom action. If they do, their prompt will start with 'Player's custom action:'. React to this custom action realistically within the game world. If the game is ending in victory or defeat, you can provide an empty array for choices. The game should build up to a climax, and not end in victory or defeat too quickly.`,
@@ -99,9 +107,9 @@ Generate a compelling opening narrative and present the first four choices.`,
 Player's Era: {era}
 Player's Faction: {faction}
 Player's Role: {role}
-Previous Choices History:
+Previous Choice History:
 {history}
 
-Generate the next segment of the story based on this history.`,
-    geminiApiError: 'The connection to the HoloNet has been lost! Enemy jammers are blocking our signal. We have been overwhelmed and must retreat. The mission is a failure.',
+Based on this history, generate the next part of the story.`,
+    geminiApiError: 'HoloNet connection lost! Enemy jammers are blocking our signal. We are overrun and must retreat. Mission failed.',
 };
