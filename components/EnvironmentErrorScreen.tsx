@@ -18,4 +18,5 @@ export const EnvironmentErrorScreen: React.FC = () => (
         Refer to the <code className="bg-black px-2 py-1 mx-1 rounded-md text-yellow-400 font-mono">README.md</code> file for detailed instructions on how to obtain and set up your API key securely.
       </p>
     </div>
-  
+  </div>
+);
