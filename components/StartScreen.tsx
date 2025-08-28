@@ -17,7 +17,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onSelectFaction, era, 
   const factionsForEra = Object.values(FACTION_DETAILS).filter(faction => faction.era.includes(era));
   
   return (
-    <div className="w-full text-center animate-fade-in-up">
+    <div className="w-full text-center">
       <h3 className={`text-2xl ${theme.text.subheader} mb-2`}>{era}</h3>
       <h4 className={`text-xl ${theme.text.secondary} mb-8 animate-pulse`}>{tt('chooseYourAllegiance')}</h4>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center">

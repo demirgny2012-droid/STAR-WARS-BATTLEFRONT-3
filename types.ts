@@ -46,3 +46,12 @@ export interface CharacterProfile {
   backstory: string;
   startingSituation: string;
 }
+
+export interface SaveData {
+  era: Era;
+  faction: Faction;
+  role: Role | null;
+  characterProfile: CharacterProfile | null;
+  history: string[];
+  savedAt: number;
+}

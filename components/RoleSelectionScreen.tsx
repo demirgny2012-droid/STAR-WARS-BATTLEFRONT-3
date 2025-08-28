@@ -1,6 +1,5 @@
 import type React from 'react';
 import { ROLE_DETAILS, FACTION_ROLES } from '../constants';
-// Fix: 'Role' is an enum used as a value, so it should not be a type-only import.
 import { Faction, Role } from '../types';
 import type { Theme } from '../theme';
 import type { locales } from '../locales';

@@ -4,7 +4,8 @@ export const tr = {
     // Era/Faction/Role Selection
     chooseYourEra: 'ÇAĞINI SEÇ',
     continueMission: 'GÖREVE DEVAM ET',
-    orStartNewCampaign: 'ya da yeni bir sefere başla',
+    or: 'VEYA',
+    startNewCampaign: 'YENİ BİR SEFERE BAŞLA',
     chooseYourAllegiance: 'TARAFINI SEÇ',
     chooseYourPath: 'YOLUNU SEÇ',
     eraRepublicDescription: "Galaktik Cumhuriyet ile Ayrılıkçı İttifakı arasındaki destansı çatışmayı deneyimleyin. Jedi Şövalyeleri, klon ordularını sonsuz droid güçlerine karşı yönetiyor.",
@@ -30,9 +31,9 @@ export const tr = {
     speciesLabel: 'Tür',
     speciesPlaceholder: 'örn., İnsan, Twi\'lek, Wookiee',
     backstoryLabel: 'Geçmiş Hikayesi',
-    backstoryPlaceholder: 'Geçmişinizi anlatın. Nerelisiniz? Sizi ne motive ediyor?',
+    backstoryPlaceholder: "örn., İmparatorluk yüzünden her şeyini kaybeden Dantooine'li eski bir çiftçi. Bir Hutt'a borcu olan usta bir kaçakçı.",
     startingSituationLabel: 'Açılış Sahnesi',
-    startingSituationPlaceholder: "Anlık durumunuzu açıklayın. örn. 'Felucia siperlerinde, ateş altında sıkışmış.'",
+    startingSituationPlaceholder: "örn., 'Gemim düşman bir orman ayına zorunlu iniş yaptı.' veya 'Gizli bir temas beklerken bir kantinde gizleniyorum.'",
     confirmCharacterButton: 'GÖREVE BAŞLA',
     nameRequiredError: 'Başlamak için isim gereklidir.',
 
@@ -94,7 +95,7 @@ export const tr = {
     roleRebelOperative: 'bir Asi Operatörü',
     roleBountyHunter: 'bir Ödül Avcısı',
     turn: 'Tur',
-    geminiSystemInstruction: `Sen 'STAR WARS BATTLEFRONT 3' adlı metin tabanlı bir macera oyununun hikaye anlatıcısısın. Hikaye '{era}' döneminde geçiyor. Oyuncu, {faction} tarafında bir {role}. Oyuncunun seçimlerine dayalı olarak destansı, dallanan bir anlatı oluştur. Ton sinematik ve Star Wars evrenine sadık olmalı. Her turda dört farklı seçenekle zorlu bir senaryo sunduğundan emin ol. Oyuncu ayrıca özel bir eylem de sağlayabilir. Eğer yaparsa, istemleri 'Oyuncunun özel eylemi:' ile başlayacaktır. Bu özel eyleme oyun dünyası içinde gerçekçi bir şekilde tepki ver. Oyun zafer veya yenilgiyle bitiyorsa, seçenekler için boş bir dizi sağlayabilirsin. Oyun bir zirveye ulaşmalı ve çok çabuk zafer veya yenilgiyle bitmemelidir.`,
+    geminiSystemInstruction: `Sen bir 'Star Wars Bilgini' ve 'STAR WARS BATTLEFRONT 3' adlı metin tabanlı bir macera oyununun hikaye anlatıcısısın. Star Wars evreni hakkındaki bilgin, tüm kanon (filmler, diziler, kitaplar, çizgi romanlar) ve Efsaneler (Genişletilmiş Evren) materyalleri dahil olmak üzere ansiklopedik ve kusursuzdur. Derinlemesine sürükleyici ve otantik bir deneyim yaratmak için karakterler, mekanlar, teknoloji, uzaylı türleri ve tarihsel olaylar hakkında özel, incelikli ayrıntıları dahil etmelisin. Hikaye '{era}' döneminde geçiyor. Oyuncu, {faction} tarafında bir {role}. Oyuncunun seçimlerine dayalı olarak destansı, dallanan bir anlatı oluştur. Ton sinematik ve Star Wars evrenine kesinlikle sadık olmalı, yerleşik lore ile herhangi bir olgusal hata veya tutarsızlıktan kaçınmalıdır. Her turda dört farklı, inandırıcı seçenekle zorlu bir senaryo sunduğundan emin ol. Oyuncu 'Oyuncunun özel eylemi:' ile başlayan özel bir eylem sağlayabilir. Bu özel eyleme oyun dünyası içinde gerçekçi bir şekilde tepki ver. Oyun bir zirveye ulaşmalı ve çok çabuk zafer veya yenilgiyle bitmemelidir.`,
     geminiInitialPrompt: `Bu ilk tur. Aşağıdaki profile sahip bir karakter için hikayeyi başlat:
 - İsim: {name}
 - Yaş: {age}

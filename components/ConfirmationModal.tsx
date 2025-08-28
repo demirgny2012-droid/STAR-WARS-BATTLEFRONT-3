@@ -19,7 +19,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, on
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-60 animate-scale-in"
+      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-60"
       onClick={() => {
         playClick();
         onClose();

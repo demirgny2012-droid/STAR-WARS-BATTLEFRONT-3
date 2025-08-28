@@ -16,6 +16,8 @@ import { defaultTheme, vipTheme } from './theme';
 import { t, locales } from './locales';
 import { initAudio, toggleSound } from './services/audioService';
 import { EnvironmentErrorScreen } from './components/EnvironmentErrorScreen';
+import { VipIcon } from './components/Icons';
+import { quotes } from './locales/quotes';
 
 
 const App: React.FC = () => {
@@ -36,6 +38,7 @@ const App: React.FC = () => {
     message: string;
     onConfirm: () => void;
   }>({ isOpen: false, title: '', message: '', onConfirm: () => {} });
+  const [splashQuote, setSplashQuote] = useState<{ quote: string, author: string } | null>(null);
 
   useEffect(() => {
     const savedGame = loadGame();
@@ -44,6 +47,18 @@ const App: React.FC = () => {
     setSettings(loadedSettings);
     initAudio(loadedSettings.soundEnabled);
   }, []);
+
+  useEffect(() => {
+    const quoteList = quotes[settings.language];
+    if (quoteList && quoteList.length > 0) {
+      const randomIndex = Math.floor(Math.random() * quoteList.length);
+      setSplashQuote(quoteList[randomIndex]);
+    }
+  }, [settings.language]);
+
+  useEffect(() => {
+    document.documentElement.lang = settings.language;
+  }, [settings.language]);
 
   const theme = settings.isVip ? vipTheme : defaultTheme;
   const tt = useCallback((key: keyof typeof locales.en, replacements?: { [key: string]: string | number | undefined | null }) => t(settings.language, key, replacements), [settings.language]);
@@ -155,8 +170,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const backgroundUrl = "https://storage.googleapis.com/aistudio-project-files/e448b11a-a10e-436f-b2f5-b6d392ca4301/S52C_n4iTjG4xJ0z_star-wars-logo.png";
-
   const renderGameState = () => {
     if (isApiKeyMissing) {
       return <EnvironmentErrorScreen />;
@@ -188,8 +201,7 @@ const App: React.FC = () => {
 
   return (
     <div
-      className="bg-black text-white min-h-screen bg-contain bg-center bg-no-repeat bg-fixed"
-      style={{ backgroundImage: `url('${backgroundUrl}')` }}
+      className="bg-black text-white min-h-screen"
     >
       <div className="min-h-screen bg-black bg-opacity-75 flex flex-col items-center justify-center p-4 relative">
         {!isApiKeyMissing && <OptionsButton onClick={() => setIsOptionsOpen(true)} />}
@@ -214,13 +226,24 @@ const App: React.FC = () => {
         />
 
         {showHeader && (
-          <header className="w-full max-w-4xl text-center mb-4 sm:mb-8 animate-fade-in-up">
-            <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest`} style={{ textShadow: '2px 2px 4px #000' }}>
-              {settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}
+          <header className="w-full max-w-4xl text-center mb-4 sm:mb-8 relative">
+            <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest flex items-center justify-center gap-x-4`} style={{ textShadow: '2px 2px 4px #000' }}>
+              {settings.isVip && <VipIcon className="w-8 h-8 md:w-10 md:h-10 text-yellow-300" />}
+              <span>{settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}</span>
             </h1>
             <h2 className={`text-xl sm:text-2xl md:text-3xl font-normal ${theme.text.subheader} tracking-wider`} style={{ textShadow: '1px 1px 2px #000' }}>
               {theme.title.sub}
             </h2>
+            {splashQuote && (
+              <div className="absolute top-12 -right-16 transform rotate-12 origin-bottom-right hidden sm:block">
+                <p className="text-yellow-200 text-base md:text-lg font-bold italic" style={{ textShadow: '1px 1px 2px #000' }}>
+                  "{splashQuote.quote}"
+                </p>
+                <p className="text-yellow-400 text-xs md:text-sm text-right pr-2">
+                  - {splashQuote.author}
+                </p>
+              </div>
+            )}
           </header>
         )}
         <main className="w-full max-w-4xl flex-grow flex items-center justify-center">

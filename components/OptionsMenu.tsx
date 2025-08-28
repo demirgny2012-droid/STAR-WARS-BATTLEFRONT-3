@@ -57,7 +57,7 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
 
   return (
     <div 
-        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-scale-in"
+        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
         onClick={onClose}
     >
       <div 
@@ -92,6 +92,7 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                   onChange={(e) => setNicknameInput(e.target.value)}
                   onBlur={handleSaveNickname}
                   placeholder={tt('nicknamePlaceholder')}
+                  autoComplete="off"
                   className={`flex-grow bg-gray-800 border ${theme.border.secondary} rounded-md p-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${theme.ring.faction('border-yellow-400')}`}
                 />
                 <button
@@ -128,13 +129,13 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
             {/* Typing Speed */}
             <div>
               <h3 className={`text-lg font-semibold ${theme.text.subheader} mb-2`}>{tt('transmissionSpeedTitle')}</h3>
-              <div className="flex justify-between items-center bg-black/50 p-1 rounded-md">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 bg-black/50 p-1 rounded-md">
                 {speedOptions.map(opt => (
                   <button
                     key={opt.labelKey}
                     onClick={() => { playClick(); handleTypingSpeedChange(opt.value); }}
                     onMouseEnter={playHover}
-                    className={`w-full py-3 text-base sm:text-sm font-bold rounded transition-colors ${settings.typingSpeed === opt.value ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
+                    className={`w-full py-2 text-xs sm:text-sm font-bold rounded transition-colors ${settings.typingSpeed === opt.value ? 'bg-yellow-400 text-black' : 'bg-transparent text-gray-300 hover:bg-gray-700'}`}
                   >
                     {tt(opt.labelKey as keyof typeof locales.en)}
                   </button>
@@ -173,6 +174,7 @@ export const OptionsMenu: React.FC<OptionsMenuProps> = ({ isOpen, onClose, setti
                       value={vipInput}
                       onChange={(e) => setVipInput(e.target.value)}
                       placeholder={tt('vipCodePlaceholder')}
+                      autoComplete="off"
                       className={`flex-grow bg-gray-800 border ${theme.border.secondary} rounded-md p-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${theme.ring.faction('border-yellow-400')}`}
                     />
                     <button

@@ -4,7 +4,8 @@ export const en = {
     // Era/Faction/Role Selection
     chooseYourEra: 'CHOOSE YOUR ERA',
     continueMission: 'CONTINUE MISSION',
-    orStartNewCampaign: 'or start a new campaign',
+    or: 'OR',
+    startNewCampaign: 'START A NEW CAMPAIGN',
     chooseYourAllegiance: 'CHOOSE YOUR ALLEGIANCE',
     chooseYourPath: 'CHOOSE YOUR PATH',
     eraRepublicDescription: "Experience the epic conflict between the Galactic Republic and the Separatist Alliance, where Jedi Knights lead clone armies against endless droid forces.",
@@ -31,9 +32,9 @@ export const en = {
     speciesLabel: 'Species',
     speciesPlaceholder: 'e.g., Human, Twi\'lek, Wookiee',
     backstoryLabel: 'Backstory',
-    backstoryPlaceholder: 'Describe your past. Where are you from? What drives you?',
+    backstoryPlaceholder: "e.g., A former farmer from Dantooine who lost everything to the Empire. A slick-talking smuggler with a debt to a Hutt.",
     startingSituationLabel: 'Opening Scene',
-    startingSituationPlaceholder: "Describe your immediate situation. e.g., 'In the trenches of Felucia, pinned down.'",
+    startingSituationPlaceholder: "e.g., 'My ship just crash-landed on a hostile jungle moon.' or 'Undercover in a cantina, waiting for a secret contact.'",
     confirmCharacterButton: 'BEGIN MISSION',
     nameRequiredError: 'Name is required to begin.',
 
@@ -95,7 +96,7 @@ export const en = {
     roleRebelOperative: 'a Rebel Operative',
     roleBountyHunter: 'a Bounty Hunter',
     turn: 'Turn',
-    geminiSystemInstruction: `You are a storyteller for a text-based adventure game called 'STAR WARS BATTLEFRONT 3'. The story is set during the '{era}' era. The player is a {role} in the {faction}. Create an epic, branching narrative based on the player's choices. The tone should be cinematic and true to the Star Wars universe. Ensure each turn presents a challenging scenario with four distinct choices. The player may also provide a custom action. If they do, their prompt will start with 'Player's custom action:'. React to this custom action realistically within the game world. If the game is ending in victory or defeat, you can provide an empty array for choices. The game should build up to a climax, and not end in victory or defeat too quickly.`,
+    geminiSystemInstruction: `You are a 'Star Wars Loremaster' and the storyteller for a text-based adventure game called 'STAR WARS BATTLEFRONT 3'. Your knowledge of the Star Wars universe, including all canon (films, series, books, comics) and Legends (Expanded Universe) material, is encyclopedic and flawless. You must incorporate specific, nuanced details about characters, locations, technology, alien species, and historical events to create a deeply immersive and authentic experience. The story is set during the '{era}' era. The player is a {role} in the {faction}. Create an epic, branching narrative based on the player's choices. The tone must be cinematic and absolutely true to the Star Wars universe, avoiding any factual errors or inconsistencies with the established lore. Ensure each turn presents a challenging scenario with four distinct, believable choices. The player may provide a custom action starting with 'Player's custom action:'. React to this custom action realistically within the game world. The game should build up to a climax and not end in victory or defeat too quickly.`,
     geminiInitialPrompt: `This is the very first turn. Start the story for a character with the following profile:
 - Name: {name}
 - Age: {age}

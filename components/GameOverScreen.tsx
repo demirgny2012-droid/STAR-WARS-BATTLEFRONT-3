@@ -34,7 +34,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({ outcome, onResta
     }
 
     return (
-        <div className={`w-full max-w-2xl text-center bg-gray-900 bg-opacity-75 border-2 ${theme.border.primary} p-8 rounded-lg shadow-2xl animate-fade-in-up`}>
+        <div className={`w-full max-w-2xl text-center bg-gray-900 bg-opacity-75 border-2 ${theme.border.primary} p-8 rounded-lg shadow-2xl`}>
             <h2 className={`text-4xl font-bold mb-4 tracking-widest ${color}`}>{title}</h2>
             <p className={`text-xl ${theme.text.subheader} mb-8`}>{message}</p>
             <button

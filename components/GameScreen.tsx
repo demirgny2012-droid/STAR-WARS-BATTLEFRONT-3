@@ -89,13 +89,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
   };
 
   if (isLoading && !storySegment) {
-    return <div className="animate-fade-in-up"><LoadingSpinner theme={theme} tt={tt} /></div>;
+    return <div><LoadingSpinner theme={theme} tt={tt} /></div>;
   }
 
   return (
-    <div className={`w-full max-w-4xl bg-gray-900 bg-opacity-75 border-2 ${factionBorderColor} rounded-lg p-4 sm:p-6 shadow-2xl animate-fade-in-up flex flex-col gap-6`}>
+    <div className={`w-full max-w-4xl bg-gray-900 bg-opacity-75 border-2 ${factionBorderColor} rounded-lg p-4 sm:p-6 shadow-2xl flex flex-col gap-6`}>
       <div 
-        className="narrative-container min-h-[120px] sm:min-h-[150px] md:min-h-[200px] bg-black/50 p-4 rounded-md cursor-pointer"
+        className="narrative-container min-h-[120px] sm:min-h-[150px] md:min-h-[200px] bg-black/50 p-4 rounded-md cursor-pointer narrative-bg"
         onClick={isTyping ? skipTyping : undefined}
         aria-live="polite"
       >
@@ -111,7 +111,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
               key={index}
               onClick={() => handleChoice(choice)}
               onMouseEnter={playHover}
-              className={`p-4 border ${theme.border.secondary} rounded-lg text-left transition-all duration-200 hover:bg-gray-800/70 hover:border-yellow-400 focus:outline-none focus:ring-2 ${factionRingColor} choice-button`}
+              className={`p-4 border ${theme.border.secondary} rounded-lg text-left transition-all duration-200 hover:bg-gray-800/70 hover:border-yellow-400 focus:outline-none focus:ring-2 ${factionRingColor}`}
             >
               <span className={`${factionTextColor} font-bold`}>{`${tt('choice')} ${index + 1}: `}</span>
               <span className={`${theme.text.primary}`}>{choice.text}</span>
@@ -119,7 +119,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
           ))}
 
           {storySegment.choices.length > 0 && (
-              <form onSubmit={handleCustomChoiceSubmit} className="md:col-span-2 flex flex-col sm:flex-row gap-2 custom-choice-form">
+              <form onSubmit={handleCustomChoiceSubmit} className="md:col-span-2 flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={customChoiceText}
@@ -127,6 +127,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ era, faction, role, char
                   placeholder={tt('customChoicePlaceholder')}
                   className={`flex-grow bg-gray-800 border ${theme.border.secondary} rounded-md p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${factionRingColor}`}
                   disabled={isLoading}
+                  autoComplete="off"
                 />
                 <button
                   type="submit"
