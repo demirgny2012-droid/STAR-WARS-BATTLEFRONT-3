@@ -3,7 +3,34 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { type StorySegment, type Language, type Era, type Faction, Role, type CharacterProfile } from '../types';
 import { t, locales } from '../locales';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+
+/**
+ * Initializes and returns the GoogleGenAI client instance.
+ * This function uses a singleton pattern to ensure the client is created only once.
+ * It safely checks for the API key in the environment, throwing an error if not found.
+ * This deferred initialization is crucial to prevent crashes in browser environments
+ * where `process.env` is not immediately available.
+ */
+const getClient = (): GoogleGenAI => {
+    if (ai) {
+        return ai;
+    }
+
+    // This check is browser-safe and prevents runtime errors on platforms like Netlify.
+    const apiKey = (typeof process !== 'undefined' && process.env && process.env.API_KEY) ? process.env.API_KEY : undefined;
+
+    if (!apiKey) {
+        // This state should be prevented by the UI's API key check, but we throw
+        // an error here as a safeguard to ensure the app fails gracefully if it's
+        // ever called without a key.
+        throw new Error("Gemini API key not found in environment.");
+    }
+    
+    ai = new GoogleGenAI({ apiKey });
+    return ai;
+};
+
 
 const roleToPromptKeyMap: Record<Role, keyof typeof locales.en> = {
   [Role.Jedi]: 'roleJedi',
@@ -94,7 +121,8 @@ export const getGameTurn = async (
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const client = getClient();
+    const response = await client.models.generateContent({
       model: "gemini-2.5-flash",
       contents: userPrompt,
       config: {
@@ -115,7 +143,7 @@ export const getGameTurn = async (
     return parsed;
   } catch (error) {
     console.error("Error fetching game turn from Gemini API:", error);
-    // If the API fails, end the game gracefully instead of looping on an error.
+    // If the API fails (including the getClient() call), end the game gracefully.
     return {
       narrative: tt('geminiApiError'),
       choices: [],

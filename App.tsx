@@ -21,7 +21,9 @@ import { quotes } from './locales/quotes';
 
 
 const App: React.FC = () => {
-  const [isApiKeyMissing] = useState(!process.env.API_KEY);
+  // Browser-safe check for the API key. In a browser environment without a bundler, `process` is undefined.
+  // This prevents a runtime error that would cause a black screen on deployment.
+  const [isApiKeyMissing] = useState(!(typeof process !== 'undefined' && process.env && process.env.API_KEY));
   const [gameState, setGameState] = useState<GameState>('eraSelect');
   const [era, setEra] = useState<Era | null>(null);
   const [faction, setFaction] = useState<Faction | null>(null);
@@ -235,7 +237,7 @@ const App: React.FC = () => {
               {theme.title.sub}
             </h2>
             {splashQuote && (
-              <div className="absolute top-12 -right-16 transform rotate-12 origin-bottom-right hidden sm:block">
+               <div className="absolute top-12 -right-16 transform rotate-12 origin-top-right hidden sm:block max-w-[200px] text-right">
                 <p className="text-yellow-200 text-base md:text-lg font-bold italic" style={{ textShadow: '1px 1px 2px #000' }}>
                   "{splashQuote.quote}"
                 </p>
