@@ -116,5 +116,6 @@ Previous Choice History:
 {history}
 
 Based on this history, generate the next part of the story.`,
+    geminiClientError: 'The connection to the HoloNet could not be established. The game host must configure their API key.',
     geminiApiError: 'HoloNet connection lost! Enemy jammers are blocking our signal. We are overrun and must retreat. Mission failed.',
 };

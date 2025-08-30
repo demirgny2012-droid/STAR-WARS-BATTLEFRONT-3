@@ -16,9 +16,9 @@ This is a text-based narrative adventure game set in the iconic Star Wars univer
 - **Responsive Design:** Enjoy a seamless experience on both desktop and mobile browsers.
 - **Multilingual Support:** Currently available in English and Turkish.
 
-## Getting Started: Adding Your API Key
+## Getting Started (For Developers/Deployment)
 
-This project requires a Google Gemini API key to function. For security, your key must be stored as an environment variable, **not** written directly in the code.
+To deploy this application, you need to provide a Google Gemini API key. This key is used securely on the backend via a serverless function and is never exposed to the players.
 
 **Step 1: Get your API Key**
 
@@ -27,9 +27,11 @@ This project requires a Google Gemini API key to function. For security, your ke
 
 **Step 2: Set the API Key as a Secret**
 
-- In your development or deployment environment (like Netlify or Vercel), find the section for managing "Secrets" or "Environment Variables".
+- In your deployment environment (like Netlify or Vercel), find the section for managing "Secrets" or "Environment Variables".
 - Create a new secret with the following name: `API_KEY`
 - In the value field, paste the API key you copied from Google AI Studio.
-- Save the secret and redeploy if necessary.
+- Save the secret.
 
-Once the `API_KEY` secret is set, the application will have secure access to it and will run correctly.
+**Step 3: Deploy**
+
+- Trigger a new deploy. The serverless function will automatically pick up the `API_KEY` environment variable, and the application will be ready for players. No further steps are needed.

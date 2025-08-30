@@ -1,80 +1,6 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
 import { type StorySegment, type Language, type Era, type Faction, Role, type CharacterProfile } from '../types';
-import { t, locales } from '../locales';
-
-let ai: GoogleGenAI | null = null;
-
-/**
- * Initializes and returns the GoogleGenAI client instance.
- * This function uses a singleton pattern to ensure the client is created only once.
- * It safely checks for the API key in the environment, throwing an error if not found.
- * This deferred initialization is crucial to prevent crashes in browser environments
- * where `process.env` is not immediately available.
- */
-const getClient = (): GoogleGenAI => {
-    if (ai) {
-        return ai;
-    }
-
-    // This check is browser-safe and prevents runtime errors on platforms like Netlify.
-    const apiKey = (typeof process !== 'undefined' && process.env && process.env.API_KEY) ? process.env.API_KEY : undefined;
-
-    if (!apiKey) {
-        // This state should be prevented by the UI's API key check, but we throw
-        // an error here as a safeguard to ensure the app fails gracefully if it's
-        // ever called without a key.
-        throw new Error("Gemini API key not found in environment.");
-    }
-    
-    ai = new GoogleGenAI({ apiKey });
-    return ai;
-};
-
-
-const roleToPromptKeyMap: Record<Role, keyof typeof locales.en> = {
-  [Role.Jedi]: 'roleJedi',
-  [Role.Clone]: 'roleClone',
-  [Role.SithAcolyte]: 'roleSith',
-  [Role.SeparatistCommander]: 'roleSeparatistCommander',
-  [Role.EmpireOperative]: 'roleEmpireOperative',
-  [Role.RebelOperative]: 'roleRebelOperative',
-  [Role.BountyHunter]: 'roleBountyHunter',
-};
-
-const storySchema = {
-  type: Type.OBJECT,
-  properties: {
-    narrative: {
-      type: Type.STRING,
-      description: "A detailed and engaging paragraph of the story, describing the current situation. Should be around 100-150 words.",
-    },
-    choices: {
-      type: Type.ARRAY,
-      description: "An array of exactly 4 choices for the player. If the outcome is 'victory' or 'defeat', this can be an empty array.",
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          text: {
-            type: Type.STRING,
-            description: "The text displayed to the player for this choice (e.g., 'Fire at the TIE Fighter').",
-          },
-          prompt: {
-            type: Type.STRING,
-            description: "A short phrase describing the action, to be used as input for the next story turn (e.g., 'Player fires at the TIE Fighter').",
-          },
-        },
-        required: ['text', 'prompt'],
-      },
-    },
-    outcome: {
-      type: Type.STRING,
-      description: "The current state of the game after this narrative segment. Can be 'ongoing', 'victory', or 'defeat'. The game should not end too quickly. A 'victory' or 'defeat' should only be declared after a few turns and a significant event.",
-      enum: ['ongoing', 'victory', 'defeat'],
-    },
-  },
-  required: ['narrative', 'choices', 'outcome'],
-};
+import { t } from '../locales';
 
 export const getGameTurn = async (
   era: Era,
@@ -84,68 +10,44 @@ export const getGameTurn = async (
   history: string[],
   language: Language,
 ): Promise<StorySegment> => {
-
-  const tt = (key: Parameters<typeof t>[1], replacements?: { [key: string]: string | number | undefined | null}) => t(language, key, replacements);
-  
-  const playerRoleDescription = role ? tt(roleToPromptKeyMap[role]) : tt('playerRoleOperative');
-
-  const systemInstruction = tt('geminiSystemInstruction', {
-    era,
-    faction,
-    role: playerRoleDescription
-  });
-  
-  const recentHistory = history.slice(-5);
-  const formattedHistory = recentHistory.map((h, i) => `${tt('turn')} ${history.length - recentHistory.length + i + 1} ${tt('choice')}: ${h}`).join('\n');
-
-  let userPrompt: string;
-
-  if (history.length === 0) {
-    userPrompt = tt('geminiInitialPrompt', {
-        era,
-        faction,
-        role: playerRoleDescription,
-        name: characterProfile.name,
-        age: characterProfile.age,
-        species: characterProfile.species,
-        backstory: characterProfile.backstory,
-        startingSituation: characterProfile.startingSituation,
-    });
-  } else {
-      userPrompt = tt('geminiUserPrompt', {
-        era,
-        faction,
-        role: playerRoleDescription,
-        history: formattedHistory,
-    });
-  }
-
   try {
-    const client = getClient();
-    const response = await client.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: userPrompt,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        responseSchema: storySchema,
+    const response = await fetch('/.netlify/functions/gemini-proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        era,
+        faction,
+        role,
+        characterProfile,
+        history,
+        language,
+      }),
     });
 
-    const jsonText = response.text.trim();
-    const cleanedJsonText = jsonText.replace(/^'|'$/g, "").replace(/^```json\s*|```\s*$/g, '');
-    const parsed = JSON.parse(cleanedJsonText) as StorySegment;
-    
-    if (!parsed.narrative || !parsed.choices || !parsed.outcome) {
-        throw new Error("Invalid story segment structure received from API.");
+    if (!response.ok) {
+      // Try to parse error from proxy response body
+      const errorData = await response.json().catch(() => null);
+      console.error("Error from proxy server:", response.status, errorData?.error);
+      throw new Error(errorData?.error || `Request failed with status ${response.status}`);
     }
 
-    return parsed;
+    const data: StorySegment = await response.json();
+
+    if (!data.narrative || !data.choices || !data.outcome) {
+        throw new Error("Invalid story segment structure received from proxy.");
+    }
+
+    return data;
   } catch (error) {
-    console.error("Error fetching game turn from Gemini API:", error);
-    // If the API fails (including the getClient() call), end the game gracefully.
+    console.error("Error fetching game turn from proxy:", error);
+    const narrative = (error as Error).message.includes('Server configuration error')
+        ? t(language, 'geminiClientError') // Use client error for missing key
+        : t(language, 'geminiApiError');   // Use API error for other issues
+    
     return {
-      narrative: tt('geminiApiError'),
+      narrative,
       choices: [],
       outcome: 'defeat',
     };

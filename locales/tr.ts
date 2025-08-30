@@ -115,5 +115,6 @@ Oyuncunun Rolü: {role}
 {history}
 
 Bu geçmişe dayanarak hikayenin bir sonraki bölümünü oluştur.`,
+    geminiClientError: 'HoloNet bağlantısı kurulamadı. Oyun sunucusunun API anahtarını yapılandırması gerekiyor.',
     geminiApiError: 'HoloNet bağlantısı kesildi! Düşman sinyal bozucuları sinyalimizi engelliyor. Baskın yedik ve geri çekilmeliyiz. Görev başarısız oldu.',
 };

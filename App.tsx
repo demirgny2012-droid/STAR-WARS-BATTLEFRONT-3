@@ -15,15 +15,10 @@ import { ConfirmationModal } from './components/ConfirmationModal';
 import { defaultTheme, vipTheme } from './theme';
 import { t, locales } from './locales';
 import { initAudio, toggleSound } from './services/audioService';
-import { EnvironmentErrorScreen } from './components/EnvironmentErrorScreen';
 import { VipIcon } from './components/Icons';
 import { quotes } from './locales/quotes';
 
-
 const App: React.FC = () => {
-  // Browser-safe check for the API key. In a browser environment without a bundler, `process` is undefined.
-  // This prevents a runtime error that would cause a black screen on deployment.
-  const [isApiKeyMissing] = useState(!(typeof process !== 'undefined' && process.env && process.env.API_KEY));
   const [gameState, setGameState] = useState<GameState>('eraSelect');
   const [era, setEra] = useState<Era | null>(null);
   const [faction, setFaction] = useState<Faction | null>(null);
@@ -173,10 +168,6 @@ const App: React.FC = () => {
   }, []);
 
   const renderGameState = () => {
-    if (isApiKeyMissing) {
-      return <EnvironmentErrorScreen />;
-    }
-
     switch (gameState) {
       case 'eraSelect':
         return <EraSelectionScreen onSelectEra={handleSelectEra} onLoadGame={handleLoadGame} hasSaveData={saveDataExists} theme={theme} tt={tt} />;
@@ -198,59 +189,59 @@ const App: React.FC = () => {
         return <EraSelectionScreen onSelectEra={handleSelectEra} onLoadGame={handleLoadGame} hasSaveData={saveDataExists} theme={theme} tt={tt}/>;
     }
   };
-
-  const showHeader = !isApiKeyMissing && (gameState === 'eraSelect' || gameState === 'start');
+  
+  const showHeader = (gameState === 'eraSelect' || gameState === 'start');
 
   return (
-    <div
-      className="bg-black text-white min-h-screen"
-    >
+    <div className="bg-black text-white min-h-screen">
       <div className="min-h-screen bg-black bg-opacity-75 flex flex-col items-center justify-center p-4 relative">
-        {!isApiKeyMissing && <OptionsButton onClick={() => setIsOptionsOpen(true)} />}
-        <OptionsMenu 
-          isOpen={isOptionsOpen} 
-          onClose={() => setIsOptionsOpen(false)}
-          settings={settings}
-          onSettingsChange={handleSettingsChange}
-          onRestart={handleRestartWithConfirmation}
-          onClearSave={handleClearSaveWithConfirmation}
-          theme={theme}
-          tt={tt}
-        />
-        <ConfirmationModal
-          isOpen={confirmationModal.isOpen}
-          onClose={() => setConfirmationModal({ ...confirmationModal, isOpen: false })}
-          onConfirm={confirmationModal.onConfirm}
-          title={confirmationModal.title}
-          message={confirmationModal.message}
-          theme={theme}
-          tt={tt}
-        />
+        <>
+          <OptionsButton onClick={() => setIsOptionsOpen(true)} />
+          <OptionsMenu 
+            isOpen={isOptionsOpen} 
+            onClose={() => setIsOptionsOpen(false)}
+            settings={settings}
+            onSettingsChange={handleSettingsChange}
+            onRestart={handleRestartWithConfirmation}
+            onClearSave={handleClearSaveWithConfirmation}
+            theme={theme}
+            tt={tt}
+          />
+          <ConfirmationModal
+            isOpen={confirmationModal.isOpen}
+            onClose={() => setConfirmationModal({ ...confirmationModal, isOpen: false })}
+            onConfirm={confirmationModal.onConfirm}
+            title={confirmationModal.title}
+            message={confirmationModal.message}
+            theme={theme}
+            tt={tt}
+          />
 
-        {showHeader && (
-          <header className="w-full max-w-4xl text-center mb-4 sm:mb-8 relative">
-            <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest flex items-center justify-center gap-x-4`} style={{ textShadow: '2px 2px 4px #000' }}>
-              {settings.isVip && <VipIcon className="w-8 h-8 md:w-10 md:h-10 text-yellow-300" />}
-              <span>{settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}</span>
-            </h1>
-            <h2 className={`text-xl sm:text-2xl md:text-3xl font-normal ${theme.text.subheader} tracking-wider`} style={{ textShadow: '1px 1px 2px #000' }}>
-              {theme.title.sub}
-            </h2>
-            {splashQuote && (
-               <div className="absolute top-12 -right-16 transform rotate-12 origin-top-right hidden sm:block max-w-[200px] text-right">
-                <p className="text-yellow-200 text-base md:text-lg font-bold italic" style={{ textShadow: '1px 1px 2px #000' }}>
-                  "{splashQuote.quote}"
-                </p>
-                <p className="text-yellow-400 text-xs md:text-sm text-right pr-2">
-                  - {splashQuote.author}
-                </p>
-              </div>
-            )}
-          </header>
-        )}
-        <main className="w-full max-w-4xl flex-grow flex items-center justify-center">
-            {renderGameState()}
-        </main>
+          {showHeader && (
+            <header className="w-full max-w-4xl text-center mb-4 sm:mb-8 relative">
+              <h1 className={`text-3xl sm:text-4xl md:text-6xl font-bold ${theme.text.header} tracking-widest flex items-center justify-center gap-x-4`} style={{ textShadow: '2px 2px 4px #000' }}>
+                {settings.isVip && <VipIcon className="w-8 h-8 md:w-10 md:h-10 text-yellow-300" />}
+                <span>{settings.nickname ? `${tt('welcome')}, ${settings.nickname}` : theme.title.main}</span>
+              </h1>
+              <h2 className={`text-xl sm:text-2xl md:text-3xl font-normal ${theme.text.subheader} tracking-wider`} style={{ textShadow: '1px 1px 2px #000' }}>
+                {theme.title.sub}
+              </h2>
+              {splashQuote && (
+                <div className="absolute top-12 -right-16 transform rotate-12 origin-top-right hidden sm:block max-w-[200px] text-right">
+                  <p className="text-yellow-200 text-base md:text-lg font-bold italic" style={{ textShadow: '1px 1px 2px #000' }}>
+                    "{splashQuote.quote}"
+                  </p>
+                  <p className="text-yellow-400 text-xs md:text-sm text-right pr-2">
+                    - {splashQuote.author}
+                  </p>
+                </div>
+              )}
+            </header>
+          )}
+          <main className="w-full max-w-4xl flex-grow flex items-center justify-center">
+              {renderGameState()}
+          </main>
+        </>
       </div>
     </div>
   );
